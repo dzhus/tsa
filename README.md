@@ -55,3 +55,13 @@ There're other Haskell packages for working with time series:
 - [kalman][]:
 
     - Probably usable for building MLE equations
+
+## Running notebooks
+
+```
+cd notebooks
+pipenv install
+stack build ihaskell
+pipenv run stack exec ihaskell install
+pipenv run stack exec jupyter notebook
+```
