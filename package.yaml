@@ -1,0 +1,25 @@
+name:                tsa
+version:             0.1.0.0
+synopsis:            Time Series Analysis
+#description:
+homepage:            https://github.com/dzhus/tsa#readme
+license:             BSD3
+author:              Dmitry Dzhus
+maintainer:          dima@dzhus.org
+copyright:           2018 Dmitry Dzhus
+category:            Web
+
+extra-source-files:
+  - CHANGELOG.md
+  - README.md
+
+ghc-options:
+  - -Wall
+  - -Wcompat
+
+dependencies:
+  - base < 5
+  - mono-traversable
+
+library:
+  source-dirs:      src
