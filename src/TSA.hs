@@ -1,10 +1,12 @@
+{-# LANGUAGE ConstraintKinds #-}
+
 module TSA
 
 where
 
-import Control.Applicative
+import qualified Data.Vector.Generic as V
 
-type Series a = [a]
+type Series s e = V.Vector s e
 
-diff :: Num a => Series a -> Series a
-diff series = getZipList $ (-) <$> ZipList (drop 1 series) <*> ZipList series
+diff :: (Num e, Series s e) => s e -> s e
+diff series = V.zipWith (-) (V.drop 1 series) series

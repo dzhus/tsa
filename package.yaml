@@ -19,7 +19,7 @@ ghc-options:
 
 dependencies:
   - base < 5
-  - mono-traversable
+  - vector
 
 library:
   source-dirs:      src
