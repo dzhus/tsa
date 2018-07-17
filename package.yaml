@@ -19,6 +19,7 @@ ghc-options:
 
 dependencies:
   - base < 5
+  - statistics
   - vector
 
 library:
