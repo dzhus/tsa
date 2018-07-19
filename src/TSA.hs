@@ -5,18 +5,23 @@ module TSA
 
 where
 
-import qualified Data.Vector.Generic as V
+import Data.Monoid
+import qualified Data.Vector.Unboxed as V
 import qualified Statistics.Sample as S
 
-type Series s e = V.Vector s e
+type Series e = V.Vector e
 
-diff :: (Num e, Series s e) => Int -> s e -> s e
+diff :: (Num e, V.Unbox e) => Int -> Series e -> Series e
 diff n series = V.zipWith (-) (V.drop n series) series
 
-type Model s e = Int -> s e -> s e
+-- | Model is a forecasting function.
+type Model e = Int -> Series e -> Series e
 
-mean :: Series s Double => Model s Double
-mean n s = V.replicate n $ S.mean s
-
-forecast :: Int -> Model s e -> s e -> s e
+forecast :: Int -> Model e -> Series e -> Series e
 forecast periods f = f periods
+
+extendBy :: V.Unbox e => Int -> Model e -> Series e -> Series e
+extendBy periods f s = s <> forecast periods f s
+
+mean :: Model Double
+mean n s = V.replicate n $ S.mean s
