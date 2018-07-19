@@ -48,3 +48,6 @@ linearTrend n s =
   where
     len = V.length s
     (coeffs, _) = S.olsRegress [V.generate len fromIntegral] s
+
+residuals :: (Num e, V.Unbox e) => Model e -> Series e -> Series e
+residuals f s = V.zipWith (-) (f Nothing s) s
