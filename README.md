@@ -1,5 +1,9 @@
 # tsa
 
+[![Travis CI build status](https://travis-ci.org/dzhus/tsa.svg)](https://travis-ci.org/dzhus/tsa)
+[![Hackage](https://img.shields.io/hackage/v/tsa.svg?colorB=5e5184&style=flat)](https://hackage.haskell.org/package/tsa)
+[![Hackage deps](https://img.shields.io/hackage-deps/v/tsa.svg)](http://packdeps.haskellers.com/feed?needle=tsa)
+
 Time Series Analysis and Forecasting in Haskell.
 
 ## Features
@@ -65,3 +69,7 @@ stack build ihaskell
 pipenv run stack exec ihaskell install
 pipenv run stack exec jupyter notebook
 ```
+
+[timeseries]: https://hackage.haskell.org/package/timeseries
+
+[kalman]: https://hackage.haskell.org/package/kalman
