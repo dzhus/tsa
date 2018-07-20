@@ -36,18 +36,13 @@ mean n s = V.replicate n' $ S.mean s
 
 linearTrend :: Model Double
 linearTrend n s =
-  if V.length coeffs == 2
-  then
-    let
+  V.iterateN n' (+ slope) start
+    where
+      n' = fromMaybe len n
+      len = V.length s
+      (coeffs, _) = S.olsRegress [V.generate len fromIntegral] s
       (slope, bias) = (coeffs V.! 0, coeffs V.! 1)
       start = fromIntegral (maybe 0 (const len) n) * coeffs V.! 0 + bias
-      n' = fromMaybe len n
-    in
-      V.iterateN n' (+ slope) start
-  else error "linearTrend: unexpected number of regression coefficients"
-  where
-    len = V.length s
-    (coeffs, _) = S.olsRegress [V.generate len fromIntegral] s
 
 residuals :: (Num e, V.Unbox e) => Model e -> Series e -> Series e
 residuals f s = V.zipWith (-) (f Nothing s) s
