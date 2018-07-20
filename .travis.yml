@@ -10,12 +10,12 @@ matrix:
     - env: FLAGS="" ARGS="--stack-yaml=stack-previous.yaml"
       compiler: ": #stack previous"
       addons: {apt: {packages: [libgmp-dev]}}
-    - env: FLAGS="" ARGS="--stack-yaml=stack-liquidhaskell.yaml"
+    - env: FLAGS="" ARGS="--stack-yaml=stack-liquidhaskell.yaml" LIQUIDHASKELL=1
       compiler: ": #stack LiquidHaskell"
       addons:
         apt:
           sources:
-            - sourceline: 'ppa:hvr/z3'
+            - sourceline: "ppa:hvr/z3"
           packages: [libgmp-dev, z3]
 
 before_install:
@@ -27,6 +27,11 @@ before_install:
 script:
 - curl -sL https://raw.github.com/ndmitchell/hlint/master/misc/travis.sh | sh -s .
 - stack $ARGS --install-ghc --no-terminal build $FLAGS --pedantic --haddock --no-haddock-deps --test --bench
+- |
+  if [ "$LIQUIDHASKELL" ]; then
+    stack $ARGS build liquidhaskell
+    stack $ARGS exec -- liquid src/TSA.hs
+  fi
 
 cache:
   directories:
