@@ -10,6 +10,13 @@ matrix:
     - env: FLAGS="" ARGS="--stack-yaml=stack-previous.yaml"
       compiler: ": #stack previous"
       addons: {apt: {packages: [libgmp-dev]}}
+    - env: FLAGS="" ARGS="--stack-yaml=stack-liquidhaskell.yaml"
+      compiler: ": #stack LiquidHaskell"
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:hvr/z3'
+          packages: [libgmp-dev, z3]
 
 before_install:
 - unset CC
