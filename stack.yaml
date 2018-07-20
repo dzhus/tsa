@@ -1,4 +1,4 @@
 resolver: lts-11.17 # Stick with GHC-8.2.x until
                     # https://ghc.haskell.org/trac/ghc/ticket/15105 is
                     # fixed
-packages: [.]
+pvp-bounds: upper
