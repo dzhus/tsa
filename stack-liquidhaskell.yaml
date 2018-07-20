@@ -5,3 +5,5 @@ extra-deps:
   - located-base-0.1.1.1
   - dotgen-0.4.2
   - fgl-visualize-0.1.0.1
+  - git: https://github.com/dzhus/liquidhaskell
+    commit: ee8fd3d933dce5c5c6ca7a0e0da3ce4f6572f3b1
