@@ -66,7 +66,7 @@ There're other Haskell packages for working with time series:
 cd notebooks
 pipenv install
 stack build ihaskell
-pipenv run stack exec ihaskell install
+PREFIX=$(pipenv --venv) pipenv run stack exec -- ihaskell install --prefix=$PREFIX
 pipenv run stack exec jupyter notebook
 ```
 
