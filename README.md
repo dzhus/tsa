@@ -10,15 +10,16 @@ Time Series Analysis and Forecasting in Haskell.
 
 - [ ] stationarizing, de-trending (log)
 
-- [ ] Standard error, confidence intervals
-
 - [ ] ACF, PACF
-
-- [ ] MLE
 
 - [ ] residual plots
 
-- [ ] a Jupyter Notebook showcasing library features
+- [ ] Standard error, confidence intervals for forecasts
+
+- [ ] AR, ARMA, ARIMA models with MLE fitting
+
+- [x] (optional) IHaskell support and a Jupyter Notebook showcasing
+      library features
 
 ## Box-Jenkins approach
 
