@@ -20,7 +20,6 @@ ghc-options:
 dependencies:
   - base < 5
   - Chart
-  - colour
   - ihaskell-charts
   - lens
   - statistics

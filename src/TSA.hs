@@ -13,7 +13,6 @@ import qualified Data.Vector.Unboxed as V
 import qualified Statistics.Sample as S
 import qualified Statistics.Regression as S
 
-import Data.Colour.Names
 import Graphics.Rendering.Chart.Easy as Chart
 
 type Series e = V.Vector e
