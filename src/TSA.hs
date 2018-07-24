@@ -18,7 +18,11 @@ import Graphics.Rendering.Chart.Easy as Chart
 
 type Series e = V.Vector e
 
-diff :: (Num e, V.Unbox e) => Int -> Series e -> Series e
+diff :: (Num e, V.Unbox e)
+     => Int
+     -- ^ Differencing period.
+     -> Series e
+     -> Series e
 diff n series = V.zipWith (-) (V.drop n series) series
 
 -- | Model is a forecasting function.
