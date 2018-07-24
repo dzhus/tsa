@@ -10,8 +10,9 @@ import Data.Maybe
 import Data.Monoid
 
 import qualified Data.Vector.Unboxed as V
-import qualified Statistics.Sample as S
+import qualified Statistics.Autocorrelation as S
 import qualified Statistics.Regression as S
+import qualified Statistics.Sample as S
 
 import Graphics.Rendering.Chart.Easy as Chart
 
@@ -53,6 +54,18 @@ linearTrend n s = V.iterateN n' (+ slope) start
 
 residuals :: (Num e, V.Unbox e) => Model e -> Series e -> Series e
 residuals f s = V.zipWith (-) (f Nothing s) s
+
+plotACF :: Int -> Series Double -> Renderable ()
+plotACF maxLag s = toRenderable $ do
+  layout_title .= "Autocorrelation"
+  layout_legend .= Nothing
+  layout_x_axis . laxis_title .= "Lag"
+  layout_x_axis . laxis_override .= (axis_labels .~ [[ (lag, show lag) | lag <- lags ]])
+  Chart.plot $ plotBars <$>
+    bars (map show lags) (map (\lag -> (lag, [acf V.! lag])) lags)
+  where
+    (acf, _, _) = S.autocorrelation s
+    lags = [1 .. maxLag]
 
 plotWithRadius :: Double -> EC (Layout x y) (PlotPoints x y) -> EC (Layout x y) ()
 plotWithRadius radius p = Chart.plot $ do
