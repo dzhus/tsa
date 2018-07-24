@@ -57,7 +57,8 @@ linearTrend n s = V.iterateN n' (+ slope) start
     start = fromIntegral (maybe 0 (const len) n) * slope + bias
 
 residuals :: (Num e, V.Unbox e) => Model e -> Series e -> Series e
-residuals f s = V.zipWith (-) (f Nothing s) s
+residuals f s = V.zipWith (-) s (f Nothing s)
+
 
 plotACF :: Int -> Series Double -> Renderable ()
 plotACF maxLag s = toRenderable $ do
