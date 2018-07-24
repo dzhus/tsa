@@ -67,11 +67,6 @@ plotACF maxLag s = toRenderable $ do
     (acf, _, _) = S.autocorrelation s
     lags = [1 .. maxLag]
 
-plotWithRadius :: Double -> EC (Layout x y) (PlotPoints x y) -> EC (Layout x y) ()
-plotWithRadius radius p = Chart.plot $ do
-  p' <- p
-  return (p' & plot_points_style . point_radius .~ radius)
-
 plotPredictions :: (PlotValue e, V.Unbox e)
                 => Int
                 -- ^ Forecast that many future points.
@@ -85,3 +80,7 @@ plotPredictions periods f s = toRenderable $ do
     , points "Predictions" $ zip [(0::Int)..] (V.toList $ f Nothing s)
     , points "Forecast" $ zip [V.length s..] (V.toList $ forecast periods f s)
     ]
+  where
+    plotWithRadius radius p = Chart.plot $ do
+      p' <- p
+      return (p' & plot_points_style . point_radius .~ radius)
