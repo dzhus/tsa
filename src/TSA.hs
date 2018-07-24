@@ -13,6 +13,7 @@ import qualified Data.Vector.Unboxed as V
 import qualified Statistics.Autocorrelation as S
 import qualified Statistics.Regression as S
 import qualified Statistics.Sample as S
+import qualified Statistics.Sample.Histogram as S
 
 import Graphics.Rendering.Chart.Easy as Chart
 
@@ -59,6 +60,16 @@ linearTrend n s = V.iterateN n' (+ slope) start
 residuals :: (Num e, V.Unbox e) => Model e -> Series e -> Series e
 residuals f s = V.zipWith (-) s (f Nothing s)
 
+plotResiduals :: Model Double -> Series Double -> Renderable ()
+plotResiduals f s = toRenderable $ do
+  layout_title .= "Residuals"
+  layout_legend .= Nothing
+  Chart.plot $ plotBars <$> do
+    b <- bars (map show $ V.toList sizes) (map (\(x, y) -> (x, [y :: Int])) barData)
+    return $ b & plot_bars_spacing .~ BarsFixGap 0 5
+  where
+    barData = V.toList $ V.zip bins sizes
+    (bins, sizes) = S.histogram 20 $ residuals f s
 
 plotACF :: Int -> Series Double -> Renderable ()
 plotACF maxLag s = toRenderable $ do
