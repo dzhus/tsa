@@ -65,6 +65,7 @@ plotACF maxLag s = toRenderable $ do
   layout_title .= "Autocorrelation"
   layout_legend .= Nothing
   layout_x_axis . laxis_title .= "Lag"
+  -- Do not skip X values
   layout_x_axis . laxis_override .= (axis_labels .~ [[ (lag, show lag) | lag <- lags ]])
   Chart.plot $ plotBars <$>
     bars (map show lags) (map (\lag -> (lag, [acf V.! lag])) lags)
