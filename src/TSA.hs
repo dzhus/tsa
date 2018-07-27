@@ -6,10 +6,14 @@ module TSA
 where
 
 import Control.Lens
+import Control.Monad.IO.Class
+import Data.Attoparsec.ByteString.Char8
+import Data.CSV.Conduit
 import Data.Maybe
 import Data.Monoid
 
 import qualified Data.Vector.Unboxed as V
+import qualified Data.Vector as VB
 import qualified Statistics.Autocorrelation as S
 import qualified Statistics.Regression as S
 import qualified Statistics.Sample as S
@@ -101,3 +105,14 @@ plotPredictions periods f s = toRenderable $ do
     plotWithRadius radius p = Chart.plot $ do
       p' <- p
       return (p' & plot_points_style . point_radius .~ radius)
+
+loadSeries :: MonadIO m
+           => FilePath
+           -- ^ CSV file name.
+           -> Int
+           -- ^ Index of column to use (1-based).
+           -> m (Series Double)
+loadSeries fname col = do
+  r <- readCSVFile defCSVSettings fname
+  return $ V.convert $ flip VB.mapMaybe r $
+    \row -> (either (const Nothing) Just . parseOnly double) =<< row VB.!? col
