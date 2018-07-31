@@ -1,1 +1,6 @@
 resolver: lts-9.21
+extra-deps:
+  - ghc-parser-0.2.0.2
+  - ihaskell-0.9.1.0
+  - ihaskell-charts-0.3.0.1
+  - ipython-kernel-0.9.1.0

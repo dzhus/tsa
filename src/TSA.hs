@@ -1,11 +1,11 @@
 {-# LANGUAGE ConstraintKinds           #-}
+{-# LANGUAGE CPP                       #-}
 {-# LANGUAGE FlexibleContexts          #-}
 
 module TSA
 
 where
 
-import Control.Lens
 import Control.Monad.IO.Class
 import Data.Attoparsec.ByteString.Char8
 import Data.CSV.Conduit
@@ -14,14 +14,29 @@ import Data.Monoid
 
 import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector as VB
-import qualified Statistics.Autocorrelation as S
 import qualified Statistics.Regression as S
 import qualified Statistics.Sample as S
-import qualified Statistics.Sample.Histogram as S
 
+#ifdef WITH_IHASKELL
+import Control.Lens
 import Graphics.Rendering.Chart.Easy as Chart
 
+import qualified Statistics.Autocorrelation as S
+import qualified Statistics.Sample.Histogram as S
+#endif
+
 type Series e = V.Vector e
+
+loadSeries :: MonadIO m
+           => FilePath
+           -- ^ CSV file name.
+           -> Int
+           -- ^ Index of column to use (1-based).
+           -> m (Series Double)
+loadSeries fname col = do
+  r <- readCSVFile defCSVSettings fname
+  return $ V.convert $ flip VB.mapMaybe r $
+    \row -> (either (const Nothing) Just . parseOnly double) =<< row VB.!? col
 
 diff :: (Num e, V.Unbox e)
      => Int
@@ -64,6 +79,7 @@ linearTrend n s = V.iterateN n' (+ slope) start
 residuals :: (Num e, V.Unbox e) => Model e -> Series e -> Series e
 residuals f s = V.zipWith (-) s (f Nothing s)
 
+#ifdef WITH_IHASKELL
 plotResiduals :: Model Double -> Series Double -> Renderable ()
 plotResiduals f s = toRenderable $ do
   layout_title .= "Residuals"
@@ -73,6 +89,7 @@ plotResiduals f s = toRenderable $ do
     return $ b & plot_bars_spacing .~ BarsFixGap 0 5
   where
     barData = V.toList $ V.zip bins sizes
+    -- TODO Customize bin count?
     (bins, sizes) = S.histogram 20 $ residuals f s
 
 plotACF :: Int -> Series Double -> Renderable ()
@@ -96,23 +113,13 @@ plotPredictions :: (PlotValue e, V.Unbox e)
                 -> Renderable ()
 plotPredictions periods f s = toRenderable $ do
   Chart.setColors [opaque blue, red `withOpacity` 50, opaque red]
-  mapM (plotWithRadius 5)
-    [ points "Series" (zip [(0::Int)..] (V.toList s))
-    , points "Predictions" $ zip [(0::Int)..] (V.toList $ f Nothing s)
+  Chart.plot $ line "Series" [zip [(0::Int)..] (V.toList s)]
+  mapM_ (plotWithRadius 5)
+    [ points "Predictions" $ zip [(0::Int)..] (V.toList $ f Nothing s)
     , points "Forecast" $ zip [V.length s..] (V.toList $ forecast periods f s)
     ]
   where
     plotWithRadius radius p = Chart.plot $ do
       p' <- p
       return (p' & plot_points_style . point_radius .~ radius)
-
-loadSeries :: MonadIO m
-           => FilePath
-           -- ^ CSV file name.
-           -> Int
-           -- ^ Index of column to use (1-based).
-           -> m (Series Double)
-loadSeries fname col = do
-  r <- readCSVFile defCSVSettings fname
-  return $ V.convert $ flip VB.mapMaybe r $
-    \row -> (either (const Nothing) Just . parseOnly double) =<< row VB.!? col
+#endif

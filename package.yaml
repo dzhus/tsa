@@ -17,15 +17,24 @@ ghc-options:
   - -Wall
   - -Wcompat
 
-dependencies:
-  - base < 5
-  - attoparsec
-  - Chart
-  - csv-conduit
-  - ihaskell-charts
-  - lens
-  - statistics
-  - vector
+flags:
+  ihaskell:
+    description: Build functions for IHaskell support
+    manual: true
+    default: false
 
 library:
   source-dirs:      src
+  dependencies:
+    - base < 5
+    - attoparsec
+    - csv-conduit
+    - lens
+    - statistics
+    - vector
+  when:
+    - condition: flag(ihaskell)
+      cpp-options: -DWITH_IHASKELL
+      dependencies:
+        - Chart
+        - ihaskell-charts
