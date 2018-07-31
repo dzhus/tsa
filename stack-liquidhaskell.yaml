@@ -1,6 +1,7 @@
 resolver: lts-11.17
 
 extra-deps:
+  - ihaskell-charts-0.3.0.1
   - liquid-fixpoint-0.7.0.7
   - located-base-0.1.1.1
   - dotgen-0.4.2
