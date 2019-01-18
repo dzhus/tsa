@@ -1,5 +1,5 @@
-{-# LANGUAGE ConstraintKinds           #-}
 {-# LANGUAGE CPP                       #-}
+{-# LANGUAGE ConstraintKinds           #-}
 {-# LANGUAGE FlexibleContexts          #-}
 
 module TSA
@@ -10,7 +10,10 @@ import Control.Monad.IO.Class
 import Data.Attoparsec.ByteString.Char8
 import Data.CSV.Conduit
 import Data.Maybe
+#if MIN_VERSION_base(4,11,0)
+#else
 import Data.Monoid
+#endif
 
 import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector as VB
