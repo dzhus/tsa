@@ -1,6 +1,4 @@
-resolver: lts-11.17 # Stick with GHC-8.2.x until
-                    # https://ghc.haskell.org/trac/ghc/ticket/15105 is
-                    # fixed
+resolver: lts-13.3
 pvp-bounds: upper
 extra-deps:
-- ihaskell-charts-0.3.0.1
+- csv-conduit-0.7.0.0@sha256:41d86398c9313bb8f6f82ef5ffe7d127a0bd2dc232a2d6994d860909e258a954
