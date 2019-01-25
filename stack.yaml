@@ -1,4 +1,22 @@
-resolver: lts-13.3
+resolver: lts-13.4
 pvp-bounds: upper
+allow-newer: true
 extra-deps:
+- Chart-cairo-1.9@sha256:82875639be230c9406dbea650647b2dc94b11060160d6dad2c98551bb23d544f
+- cairo-0.13.5.0@sha256:1d00ce1828b6725579cbbb0ce3c3e960d54d9413f5bc29e748b3c93245c25380
 - csv-conduit-0.7.0.0@sha256:41d86398c9313bb8f6f82ef5ffe7d127a0bd2dc232a2d6994d860909e258a954
+- ghc-parser-0.2.0.2@sha256:c50c597520d402cde78a43363571e6c98da26a71ce186862eb4a73583f7447dc
+- git: https://github.com/gibiansky/IHaskell.git
+  commit: c070adf8828dad378bb0048483c16f2640a339b5
+  subdirs:
+    - '.'
+    - ipython-kernel
+- git: https://github.com/gtk2hs/gtk2hs.git
+  commit: 7bccd432e2f962d80b2b804fa2a59712e402753c
+  subdirs:
+    - 'tools'
+- git: https://github.com/timbod7/haskell-chart.git
+  commit: 23e9739b80ecbb6fe70c4a7989714414f9f915c7
+  subdirs:
+    - Chart
+- ihaskell-charts-0.3.0.1@sha256:009c7a923a29bbc021c3b00f24b1d47613dd286a7d0cd78cfbe84f95393858b2
